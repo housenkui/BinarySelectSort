@@ -17,13 +17,18 @@
  3.写缓存
  4.计算时间复杂度
  */
-#define N 100
+#define N 10000
 
 void printArr(long a[],long n);
 //升序
 void selectMaxAndMin(long a[],long n);
 
 static NSUInteger exchangeCount = 0;
+
+static NSUInteger compareCount = 0;
+static NSUInteger moveCount = 0;
+
+
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
@@ -86,9 +91,11 @@ int main(int argc, const char * argv[]) {
         [mutableString1 writeToFile:[NSString stringWithFormat:@"%@/排序后%d.txt",path,N] atomically:YES encoding:NSUTF8StringEncoding error:nil];
         
         
-        NSLog(@"采样数%d,交换次数%lu",N,exchangeCount);
+        NSUInteger sumCount = compareCount+moveCount;
         
-        double T = log10(exchangeCount)/log10(N);
+        NSLog(@"采样数%d,交换次数%lu",N,compareCount+moveCount);
+        
+        double T = log10(sumCount)/log10(N);
         
         NSLog(@"二元选择排序的时间复杂度为%lf",T);
         
@@ -105,6 +112,8 @@ void printArr(long a[],long n){
         NSLog(@"a[%ld] = %ld",i,a[i]);
     }
 }
+
+//二元选择排序 时间复杂度 也不行 
 void selectMaxAndMin(long a[],long n){
     
     long max,min,i,j,temp;
@@ -115,15 +124,15 @@ void selectMaxAndMin(long a[],long n){
         
         for (j=i+1; j<n-i; j++) {
             
+            compareCount ++;
             if (a[j] < a[min])
             {
                 min = j;
-                exchangeCount++;
                 continue;
             }
+            compareCount ++;
             if (a[j]>a[max]) {
                 max = j;
-                exchangeCount++;
             }
         }
         
@@ -131,7 +140,7 @@ void selectMaxAndMin(long a[],long n){
         a[i] = a[min];
         a[min] = temp;
         
-        exchangeCount++;
+        moveCount += 3;
         
         if (max==i) {
             
@@ -139,6 +148,8 @@ void selectMaxAndMin(long a[],long n){
             temp = a[n-i-1];
             a[n-i-1] = a[min];
             a[min] = temp;
+            
+
         }
         else
         {
@@ -147,7 +158,7 @@ void selectMaxAndMin(long a[],long n){
             a[max] =temp;
         }
         
-        exchangeCount++;
+        moveCount += 3;
     }
 }
 
