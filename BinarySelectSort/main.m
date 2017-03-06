@@ -113,7 +113,7 @@ void printArr(long a[],long n){
     }
 }
 
-//二元选择排序 时间复杂度 也不行 
+//二元选择排序 时间复杂度 也不行 ，主要是 元素之间没有跳跃式的 移动
 void selectMaxAndMin(long a[],long n){
     
     long max,min,i,j,temp;
